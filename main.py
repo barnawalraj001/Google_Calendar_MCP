@@ -159,8 +159,14 @@ def calendar_create_event(user_id: str, summary: str, start: str, end: str):
 
     event = {
         "summary": summary,
-        "start": {"dateTime": start},
-        "end": {"dateTime": end},
+        "start": {
+            "dateTime": start,
+            "timeZone": "Asia/Kolkata",  # REQUIRED
+        },
+        "end": {
+            "dateTime": end,
+            "timeZone": "Asia/Kolkata",  # REQUIRED
+        },
     }
 
     created = (
@@ -173,6 +179,7 @@ def calendar_create_event(user_id: str, summary: str, start: str, end: str):
         "id": created["id"],
         "htmlLink": created["htmlLink"],
     }
+
 
 
 def calendar_delete_event(user_id: str, event_id: str):
