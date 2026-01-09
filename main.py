@@ -7,12 +7,20 @@ from fastapi.responses import JSONResponse, RedirectResponse
 from google_auth_oauthlib.flow import Flow
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
+from fastapi.middleware.trustedhost import TrustedHostMiddleware
 
 from tokens import load_tokens, save_tokens
 
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "0"
 
 app = FastAPI()
+
+
+app.add_middleware(
+    TrustedHostMiddleware,
+    allowed_hosts=["*"],
+)
+
 
 # ======================
 # Google OAuth config
@@ -80,8 +88,12 @@ def google_auth(user_id: str = "default"):
 
 @app.get("/auth/google/callback")
 def google_callback(request: Request):
+    code = request.query_params.get("code")
+    if not code:
+        return {"status": "waiting for google authorization"}
+
     flow = get_oauth_flow()
-    flow.fetch_token(authorization_response=str(request.url))
+    flow.fetch_token(authorization_response=request.url._url)
 
     user_id = request.query_params.get("state", "default")
 
