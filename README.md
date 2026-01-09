@@ -22,8 +22,6 @@ Open in browser:
 
 https://your-app-name.up.railway.app/auth/google?user_id=xyz
 
-yaml
-Copy code
 
 ---
 
@@ -33,8 +31,7 @@ Use this endpoint to connect MCP:
 
 https://your-app-name.up.railway.app/mcp
 
-yaml
-Copy code
+
 
 ---
 
